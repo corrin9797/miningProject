@@ -25,7 +25,9 @@ public class gameScript : MonoBehaviour {
     //a location in the world
     Vector3 cubePosition;
     //initializes a cube
-    public GameObject bronzeCube;
+    public GameObject cubePrefab;
+
+    GameObject currentCube;
 
     float xPosition, yPosition;
 
@@ -39,7 +41,7 @@ public class gameScript : MonoBehaviour {
         nextMine = miningSpeed;
         //                         x, y, z
         cubePosition = new Vector3(0, 0, 0);
-        xPosition = -8;
+        xPosition = -10;
         yPosition = 4;
 	}
 	
@@ -54,22 +56,44 @@ public class gameScript : MonoBehaviour {
             //I made it so as all could happen and so that one happening would not change whether another happened.
             if (silverOre==2 && bronzeOre==2){
                 goldOre++;
-                //SPAWN GOLD
+                xPosition += 2;
+                if (xPosition > 8)
+                {
+                    yPosition -= 2;
+                    xPosition = -8;
+                }
+                cubePosition = new Vector3(xPosition, yPosition, 0);
+
+                //                                    Quaternion, as of right now, is a magic word.
+                currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
+                currentCube.GetComponent<Renderer>().material.color = Color.yellow;
             }
             if (bronzeOre < 4){
                 bronzeOre++;
                 xPosition += 2;
                 if (xPosition > 8){
-                    yPosition -= 4;
+                    yPosition -= 2;
+                    xPosition=-8;
                 }
                 cubePosition = new Vector3(xPosition, yPosition, 0);
 
                 //                                    Quaternion, as of right now, is a magic word.
-                Instantiate(bronzeCube, cubePosition, Quaternion.identity);
+                currentCube=Instantiate(cubePrefab, cubePosition, Quaternion.identity);
+                currentCube.GetComponent<Renderer>().material.color = Color.red;
             }
             else{ //No need for an if statement here, there's no distance between <4 and 4
                 silverOre++;
-                //SPAWN SILVER
+                xPosition += 2;
+                if (xPosition > 8)
+                {
+                    yPosition -= 2;
+                    xPosition = -8;
+                }
+                cubePosition = new Vector3(xPosition, yPosition, 0);
+
+                //                                    Quaternion, as of right now, is a magic word.
+                currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
+                currentCube.GetComponent<Renderer>().material.color = Color.white;
             }
             print("You have " + points + " points");
         }

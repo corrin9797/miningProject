@@ -293,7 +293,7 @@ MonoBehaviour:
   bronzePoints: 1
   silverPoints: 10
   goldPoints: 100
-  bronzeCube: {fileID: 1195806682592984, guid: b21ee123a60ff9d408b122ee25bc81e9, type: 2}
+  cubePrefab: {fileID: 1195806682592984, guid: b21ee123a60ff9d408b122ee25bc81e9, type: 2}
 --- !u!4 &1331131816
 Transform:
   m_ObjectHideFlags: 0
