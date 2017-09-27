@@ -11,15 +11,15 @@ public class gameScript : MonoBehaviour {
     // nothing about whether to include a global suppy of ore, for instance.
     // I'll assume the basic concept of mining is the same, but I'll be replacing stuff wherever I can:
     // points replaces player-gathered ore, ore being clicked replaces ore being given.
-
+    
     public int miningSpeed=3; 
-    public int bronzePoints = 1;
-    public int silverPoints = 10;
-    public int goldPoints = 100;
-    int points;
-    int bronzeOre;
-    int silverOre;
-    int goldOre;
+    public static int bronzePoints = 1;
+    public static int silverPoints = 10;
+    public static int goldPoints = 100;
+    public static int points;
+    public static int bronzeOre;
+    public static int silverOre;
+    public static int goldOre;
     int nextMine; //Tracks when the next ore will be mined by adding miningSpeed to it whenever ore is mined.
 
     //a location in the world
@@ -53,7 +53,7 @@ public class gameScript : MonoBehaviour {
             nextMine += miningSpeed;
             //I didn't know whether the mining statements were exclusive, if they ran in order or if only one could happen.
             //I also didn't know which had priority if they were exclusive
-            //I made it so as all could happen and so that one happening would not change whether another happened.
+            //I made it so as only one could happen.
             if (silverOre==2 && bronzeOre==2){
                 goldOre++;
                 xPosition += 2;
@@ -67,8 +67,9 @@ public class gameScript : MonoBehaviour {
                 //                                    Quaternion, as of right now, is a magic word.
                 currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
                 currentCube.GetComponent<Renderer>().material.color = Color.yellow;
+                currentCube.AddComponent<goldScript>();
             }
-            if (bronzeOre < 4){
+            else if (bronzeOre < 4){
                 bronzeOre++;
                 xPosition += 2;
                 if (xPosition > 8){
@@ -78,8 +79,11 @@ public class gameScript : MonoBehaviour {
                 cubePosition = new Vector3(xPosition, yPosition, 0);
 
                 //                                    Quaternion, as of right now, is a magic word.
-                currentCube=Instantiate(cubePrefab, cubePosition, Quaternion.identity);
+                currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
                 currentCube.GetComponent<Renderer>().material.color = Color.red;
+                currentCube.AddComponent<bronzeScript>();
+                
+                
             }
             else{ //No need for an if statement here, there's no distance between <4 and 4
                 silverOre++;
@@ -94,9 +98,12 @@ public class gameScript : MonoBehaviour {
                 //                                    Quaternion, as of right now, is a magic word.
                 currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
                 currentCube.GetComponent<Renderer>().material.color = Color.white;
+                currentCube.AddComponent<silverScript>();
             }
             print("You have " + points + " points");
+            print("Bronze: " + bronzeOre + " Silver: " + silverOre + " Gold: " + goldOre);
         }
         
 	}
+    
 }
