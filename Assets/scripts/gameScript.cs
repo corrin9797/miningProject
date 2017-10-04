@@ -11,7 +11,7 @@ public class gameScript : MonoBehaviour {
     // nothing about whether to include a global suppy of ore, for instance.
     // I'll assume the basic concept of mining is the same, but I'll be replacing stuff wherever I can:
     // points replaces player-gathered ore, ore being clicked replaces ore being given.
-    
+    bool spawnedGold = false;
     public int miningSpeed=3; 
     public static int bronzePoints = 1;
     public static int silverPoints = 10;
@@ -51,9 +51,9 @@ public class gameScript : MonoBehaviour {
 	void Update () {
         if (Time.time > nextMine){
             nextMine += miningSpeed;
-            //I didn't know if gold could only happen once or happened and then also let another ore spawn. I assume
-            //it's the latter because bonus objectives mention multiple golds.
-            if (silverOre==2 && bronzeOre==2){
+            //I didn't know if gold could only happen once or happened and then also let another ore spawn.
+            //I asked you, and you said no conseutive golds.
+            if (silverOre==2 && bronzeOre==2 && !spawnedGold){
                 goldOre++;
                 xPosition += 2;
                 if (xPosition > 8)
@@ -67,8 +67,9 @@ public class gameScript : MonoBehaviour {
                 currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
                 currentCube.GetComponent<Renderer>().material.color = Color.yellow;
                 currentCube.AddComponent<goldScript>();
+                spawnedGold = true;
             }
-            if (bronzeOre < 4){
+            else if (bronzeOre < 4){
                 bronzeOre++;
                 xPosition += 2;
                 if (xPosition > 8){
@@ -81,7 +82,7 @@ public class gameScript : MonoBehaviour {
                 currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
                 currentCube.GetComponent<Renderer>().material.color = Color.red;
                 currentCube.AddComponent<bronzeScript>();
-                
+                spawnedGold = false;
                 
             }
             else{ //No need for an if statement here, there's no distance between <4 and 4
@@ -98,9 +99,11 @@ public class gameScript : MonoBehaviour {
                 currentCube = Instantiate(cubePrefab, cubePosition, Quaternion.identity);
                 currentCube.GetComponent<Renderer>().material.color = Color.white;
                 currentCube.AddComponent<silverScript>();
+                spawnedGold = false;
             }
             print("You have " + points + " points");
             print("Bronze: " + bronzeOre + " Silver: " + silverOre + " Gold: " + goldOre);
+            
         }
         
 	}
