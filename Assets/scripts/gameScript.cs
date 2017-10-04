@@ -51,9 +51,8 @@ public class gameScript : MonoBehaviour {
 	void Update () {
         if (Time.time > nextMine){
             nextMine += miningSpeed;
-            //I didn't know whether the mining statements were exclusive, if they ran in order or if only one could happen.
-            //I also didn't know which had priority if they were exclusive
-            //I made it so as only one could happen.
+            //I didn't know if gold could only happen once or happened and then also let another ore spawn. I assume
+            //it's the latter because bonus objectives mention multiple golds.
             if (silverOre==2 && bronzeOre==2){
                 goldOre++;
                 xPosition += 2;
@@ -69,7 +68,7 @@ public class gameScript : MonoBehaviour {
                 currentCube.GetComponent<Renderer>().material.color = Color.yellow;
                 currentCube.AddComponent<goldScript>();
             }
-            else if (bronzeOre < 4){
+            if (bronzeOre < 4){
                 bronzeOre++;
                 xPosition += 2;
                 if (xPosition > 8){
