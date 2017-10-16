@@ -20,6 +20,13 @@ public class gameScript : MonoBehaviour {
     public static int bronzeOre;
     public static int silverOre;
     public static int goldOre;
+    string onScreenScore;
+    //These variables track time, and reset at 60 andding one to the next one up.
+    int seconds;
+    int secondChecker = 1;
+    int minutes;
+    int hours;
+    string totalTime;
     int nextMine; //Tracks when the next ore will be mined by adding miningSpeed to it whenever ore is mined.
 
     //a location in the world
@@ -49,6 +56,40 @@ public class gameScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        //This is for the bit that tracks how long the player has been playing and shows it on screen (challenge by choice)
+        if (Time.time > secondChecker)
+        {
+            seconds++;
+            secondChecker++;
+        }
+        if (seconds >= 60)
+        {
+            seconds -= 60;
+            minutes++;
+        }
+        if (minutes >= 60)
+        {
+            minutes -= 60;
+            hours++;
+        }
+        //writing totalTime to account for 00:00:00 format
+        if (hours < 10)
+        {
+            totalTime = "0";
+        }
+        totalTime += hours.ToString() + ":";
+        if (minutes < 10)
+        {
+            totalTime += "0";
+        }
+        totalTime += minutes.ToString() + ":";
+        if (seconds < 10)
+        {
+            totalTime += "0";
+        }
+        totalTime += seconds.ToString();
+        print(totalTime);
+        //This is the mian part of the project
         if (Time.time > nextMine){
             nextMine += miningSpeed;
             //I didn't know if gold could only happen once or happened and then also let another ore spawn.
@@ -106,6 +147,18 @@ public class gameScript : MonoBehaviour {
             
         }
         
-	}
+        
+
+    }
     
+    void OnGUI() //This appears to be an editable text box, but you can't actually edit it.
+                //I'm fairly certain this isn't entirely the "right" way to do this but it works.
+    {
+        onScreenScore = "Score: "+points.ToString();
+        
+        onScreenScore = GUI.TextField(new Rect(10, 0, 200, 20), onScreenScore, 25);
+        
+        totalTime= GUI.TextField(new Rect(600, 0, 100, 20), totalTime, 25);
+    }
+
 }
