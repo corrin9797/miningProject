@@ -21,4 +21,13 @@ public class goldScript : MonoBehaviour {
         gameScript.goldOre--;
         Destroy(this.gameObject);
     }
+    void OnMouseOver()
+    {
+        this.GetComponent<Renderer>().material.color = Color.cyan; //No, cyan is not a lighter shade of yellow, but the Color.* options
+                                                                    // are rather limited.
+    }
+    void OnMouseExit()
+    {
+        this.GetComponent<Renderer>().material.color = Color.yellow;
+    }
 }

@@ -21,4 +21,12 @@ public class silverScript : MonoBehaviour {
         gameScript.silverOre--;
         Destroy(this.gameObject);
     }
+    void OnMouseOver()
+    {
+        this.GetComponent<Renderer>().material.color = Color.gray;
+    }
+    void OnMouseExit()
+    {
+        this.GetComponent<Renderer>().material.color = Color.white;
+    }
 }
